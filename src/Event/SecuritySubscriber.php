@@ -62,8 +62,8 @@ class SecuritySubscriber implements EventSubscriberInterface
 
 		$user_key_encoded = $user->getEncryptionKey();
 
-		$password = $event->getRequest()->request->get('_password');
-		$password = sha1($password);
+		$password = $event->getRequest()->request->get('password');
+		$password = hash('sha512', $password);
 
 		$protected_key = KeyProtectedByPassword::loadFromAsciiSafeString($user_key_encoded);
 		$user_key = $protected_key->unlockKey($password);

@@ -60,7 +60,7 @@ class RegistrationController extends AbstractController
 			$user->setRole($role);
 
 			$password = $form->get('password')->getData();
-			$password = sha1($password);
+			$password = hash('sha512', $password);
 
 			$protected_key = KeyProtectedByPassword::createRandomPasswordProtectedKey($password);
 			$protected_key_encoded = $protected_key->saveToAsciiSafeString();

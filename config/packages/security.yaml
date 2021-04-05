@@ -22,18 +22,10 @@ security:
             # La connexion n'est pas requise sur toutes les pages
             # par exemple la page d'accueil
             anonymous: true
-
+            
             form_login:
-                # Le nom de la route de la page de connexion
-                check_path: login
-                # Le nom de la route où se trouve le formulaire de connexion
-                # Si un utilisateur tente d'acceder à une page protégée sans en avoir les droits
-                # il sera redirigé sur cette page
                 login_path: login
-                # Securisation des formulaires
-                csrf_token_generator: security.csrf.token_manager
-                # La page par defaut apres une connexion reussie
-                default_target_path: index
+                check_path: login
 
             guard:
                 authenticators:

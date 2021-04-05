@@ -13,33 +13,37 @@ use Gregwar\Captcha\CaptchaBuilder;
 class SecurityController extends AbstractController
 {
 	/**
-	 * @Route("/login", name="login")
-	 */
-	public function login(AuthenticationUtils $helper, Request $request): Response
+	* @Route("/login", name="login", methods={"GET", "POST"})
+	*/
+	public function login(AuthenticationUtils $authenticationUtils, Request $request): Response
 	{
 		$captcha = $this->setCaptcha($request);
-
+		
+		$error = $authenticationUtils->getLastAuthenticationError();
+		$lastUsername = $authenticationUtils->getLastUsername();
+		
 		return $this->render('login.html.twig', [
-			'last_username' => $helper->getLastUsername(),
-			'error' => $helper->getLastAuthenticationError(),
+			'last_username' => $lastUsername,
+			'error' => $error,
 			'captcha' => $captcha
-		]);
+			]
+		);
 	}
-
+	
 	/**
-	 * @Route("/logout", name="logout")
-	 */
+	* @Route("/logout", name="logout")
+	*/
 	public function logout(): void
 	{
 		throw new \Exception('This should never be reached!');
 	}
-
+	
 	public function setCaptcha(Request $request)
 	{
 		$captcha = new CaptchaBuilder();
 		$captcha->build();
 		$request->getSession()->set('phrase', $captcha->getPhrase());
-
+		
 		return $captcha;
 	}
 }

@@ -4,10 +4,10 @@ namespace App\DataFixtures;
 
 use App\Entity\User;
 use Doctrine\Bundle\FixturesBundle\Fixture;
-use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use Defuse\Crypto\KeyProtectedByPassword;
 use App\Entity\Role;
+use Doctrine\Persistence\ObjectManager as PersistenceObjectManager;
 
 class AppFixtures extends Fixture
 {
@@ -18,7 +18,7 @@ class AppFixtures extends Fixture
 		$this->passwordEncoder = $passwordEncoder;
 	}
 
-	public function load(ObjectManager $manager)
+	public function load(PersistenceObjectManager $manager)
 	{
 		$roles = [];
 
@@ -42,7 +42,7 @@ class AppFixtures extends Fixture
 			$user->setRole($roles[$role]);
 			$user->setEmailConfirmed(true);
 
-			$password = sha1($password);
+			$password = hash('sha512', $password);
 
 			$protected_key = KeyProtectedByPassword::createRandomPasswordProtectedKey($password);
 			$protected_key_encoded = $protected_key->saveToAsciiSafeString();

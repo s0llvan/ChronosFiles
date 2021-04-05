@@ -107,7 +107,7 @@ class ResetPasswordController extends AbstractController
 
             $formPassword = $form->get('password')->getData();
 
-            $password = sha1($formPassword);
+            $password = hash('sha512', $formPassword);
 
             $protected_key = KeyProtectedByPassword::createRandomPasswordProtectedKey($password);
             $protected_key_encoded = $protected_key->saveToAsciiSafeString();

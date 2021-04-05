@@ -4,56 +4,58 @@
 
 {% block body %}
 <div class="ui grid stackable">
-    <div class="five wide column"></div>
-    <div class="five wide column">
+	<div class="five wide column"></div>
+	<div class="five wide column">
 		<form action="{{ path('login') }}" method="post" class="ui form">
-            <div class="field">
-                <label for="username">Username</label>
-                <input type="text" id="username" name="_username" value="{{ last_username }}"/>
-            </div>
-            <div class="field">
-                <label for="password">Password</label>
-                <input type="password" id="password" name="_password" />
-            </div>
-
 			<div class="field">
-                <label for="captcha">Captcha</label>
+				<label for="username">Username</label>
+				<input type="text" id="username" name="username" value="{{ last_username }}"/>
+			</div>
+			<div class="field">
+				<label for="password">Password</label>
+				<input type="password" id="password" name="password" />
+			</div>
+			
+			<div class="field">
+				<label for="captcha">Captcha</label>
 				<img src="{{ captcha.inline }}">
-                <input type="text" id="captcha" name="captcha" value="" required />
-            </div>
-            
+				<input type="text" id="captcha" name="captcha" value="" required />
+			</div>
+
 			{% if error %}
-            <div class="ui form error field">
-                <div class="ui error message">
-                    <p>{{ error.messageKey }}</p>
-                </div>
-            </div>
-            {% endif %}
-
-            {% for flashMessage in app.session.flashbag.get('success') %}
-            <div class="ui form success field">
-                <div class="ui success message">
-                    <p>{{ flashMessage }}</p>
-                </div>
-            </div>
-            {% endfor %}
-
-             {% for flashMessage in app.session.flashbag.get('error') %}
-            <div class="ui form error field">
-                <div class="ui error message">
-                    <p>{{ flashMessage }}</p>
-                </div>
-            </div>
-            {% endfor %}
-
-            <div class="field">
-                <a href="{{ path('reset_password') }}">Forgot your password ?</a>
-            </div>
-
-            <button type="submit" class="ui button">
-                <i class="fa fa-sign-in" aria-hidden="true"></i> Sign-in
-            </button>
+			<div class="ui form error field">
+				<div class="ui error message">
+					<p>{{ error.message }}</p>
+				</div>
+			</div>
+			{% endif %}
+			
+			{% for flashMessage in app.session.flashbag.get('success') %}
+			<div class="ui form success field">
+				<div class="ui success message">
+					<p>{{ flashMessage }}</p>
+				</div>
+			</div>
+			{% endfor %}
+			
+			{% for flashMessage in app.session.flashbag.get('error') %}
+			<div class="ui form error field">
+				<div class="ui error message">
+					<p>{{ flashMessage }}</p>
+				</div>
+			</div>
+			{% endfor %}
+			
+			<input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
+			
+			<div class="field">
+				<a href="{{ path('reset_password') }}">Forgot your password ?</a>
+			</div>
+			
+			<button type="submit" class="ui button">
+				<i class="fa fa-sign-in" aria-hidden="true"></i> Sign-in
+			</button>
 		</form>
-    </div>
+	</div>
 </div>
 {% endblock %}
